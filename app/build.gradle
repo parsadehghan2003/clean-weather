@@ -1,0 +1,67 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+
+}
+
+apply from:   '../build_versions.gradle'
+
+android {
+    compileSdkVersion 32
+
+    defaultConfig {
+        applicationId "com.parsadehghan.interactor"
+        minSdkVersion 16
+        targetSdkVersion 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11.toString()
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${libraries.core_ktx_version}"
+
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "androidx.appcompat:appcompat:${libraries.appcompat_version}"
+    implementation "androidx.constraintlayout:constraintlayout:${libraries.constraintlayout_version}"
+    implementation "androidx.recyclerview:recyclerview:${libraries.recyclerview_version}"
+
+    implementation "androidx.activity:activity-ktx:${libraries.activity_ktx_version}"
+    kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.3.0"
+
+    implementation project(":data")
+    implementation project(":domain")
+    implementation project(":interctor")
+
+    implementation "com.google.dagger:hilt-android:2.28-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
+    kapt "androidx.hilt:hilt-compiler:1.0.0-alpha01"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+}

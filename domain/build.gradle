@@ -1,0 +1,42 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+apply from:   '../build_versions.gradle'
+android {
+    compileSdkVersion 32
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${libraries.core_ktx_version}"
+
+    api "com.google.dagger:hilt-android:2.28-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
+
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${libraries.coroutines_version}"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${libraries.coroutines_version}"
+    kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.3.0"
+    testImplementation 'junit:junit:4.12'
+
+}
