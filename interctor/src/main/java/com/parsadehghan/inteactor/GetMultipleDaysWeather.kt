@@ -6,19 +6,20 @@ import com.parsadehghan.domain.exceptions.IErrorHandler
 import com.parsadehghan.domain.exceptions.InvalidCityId
 import com.parsadehghan.domain.exceptions.InvalidRequestMultipleWeather
 import com.parsadehghan.inteactor.base.UseCase
+import com.parsadehghan.inteactor.base.UseCaseCallback
 import javax.inject.Inject
 
 class GetMultipleDaysWeather @Inject constructor(
     private val repository: Repository,
     errorHandler: IErrorHandler
 ) :
-    UseCase<List<Weather>, RequestMultipleWeather>(errorHandler) {
+    UseCase<RequestMultipleWeather,List<Weather>>(errorHandler) {
 
-    override suspend fun run(params: RequestMultipleWeather?): List<Weather> {
+    override suspend fun run(params: RequestMultipleWeather?): UseCaseCallback<List<Weather>> {
         when {
             params == null -> throw InvalidRequestMultipleWeather()
             params.cityId == null -> throw InvalidCityId()
-            else -> return repository.getMultipleDaysWeather(params.cityId!!, params.cnt)
+            else -> return UseCaseCallback.Success(repository.getMultipleDaysWeather(params.cityId!!, params.cnt))
         }
     }
 

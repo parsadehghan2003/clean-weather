@@ -17,7 +17,7 @@ interface OpenWeatherApiService {
      * @return instance of [CurrentWeatherResponse]
      */
 
-    @GET("interactor")
+    @GET("weather")
     suspend fun getCurrentWeather(
         @Query("id") cityId: Int,
         @Query("units") units: String,

@@ -2,26 +2,26 @@ package com.parsadehghan.inteactor.base
 
 import com.parsadehghan.domain.exceptions.IErrorHandler
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
-abstract class UseCase<Response, Params>(private val errorHandler: IErrorHandler) {
+abstract class UseCase<Params,Response>(private val errorHandler: IErrorHandler) {
 
 
-    abstract suspend fun run(params: Params? = null): Response
+    abstract suspend fun run(params: Params? = null): UseCaseCallback<Response>
 
     suspend fun call(
         params: Params? = null,
-        onResult: (UseCaseCallback<Response>)?
-    ) {
+
+    ) : Flow<UseCaseCallback<Response>> = flow {
         try {
             val result = run(params)
-            onResult?.onSuccess(result)
+            emit(result)
             println("$TAG Response: $result")
         } catch (e: CancellationException) {
             println("$TAG Error: $e")
-            onResult?.onError(errorHandler.handleException(e))
         } catch (e: Exception) {
             println("$TAG Error:$e cause: ${e.cause}")
-            onResult?.onError(errorHandler.handleException(e))
         }
     }
 

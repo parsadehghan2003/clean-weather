@@ -2,9 +2,11 @@ package com.parsadehghan.inteactor.base
 
 import com.parsadehghan.domain.exceptions.ErrorModel
 
-interface UseCaseCallback<Type> {
+sealed class UseCaseCallback<T> (
+    val data: T? = null,
+    val errorModel: ErrorModel? = null
+) {
 
-    fun onSuccess(result: Type)
-
-    fun onError(errorModel: ErrorModel?)
+    class Success<T>(data: T) : UseCaseCallback<T>(data)
+    class Error<T>(errorModel: ErrorModel?, data: T? = null) : UseCaseCallback<T>(data, errorModel)
 }
