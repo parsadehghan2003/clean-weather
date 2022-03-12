@@ -4,15 +4,16 @@ import com.parsadehghan.data.remote.model.ForecastDailyResponse
 import com.parsadehghan.data.remote.model.ForecastResponse
 import com.parsadehghan.domain.entity.Weather
 import java.util.*
+import kotlin.math.roundToInt
 
 fun mapToForecast(forecastResponse: ForecastResponse): List<Weather> {
     val weatherList = mutableListOf<Weather>()
     forecastResponse.list.forEach { item ->
         weatherList.add(
             Weather(
-                item.main.temp_min.toInt(),
-                item.main.temp_max.toInt(),
-                item.main.temp.toInt(),
+                item.main.temp_min.roundToInt(),
+                item.main.temp_max.roundToInt(),
+                item.main.temp.roundToInt(),
                 mapWeatherIcon(item.weather.first().icon),
                 item.dt.convertTimeStampToHour()
             )
